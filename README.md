@@ -1,4 +1,4 @@
-Linux + Nginx + Php-fpm + MySql environment for Magento, Symfony, Laravel and others
+Linux + Nginx + Php-fpm + MySql Dev Environment for Magento, Symfony, Laravel and others
 ===============================
 
 ## Ubuntu Installation 14.04:
