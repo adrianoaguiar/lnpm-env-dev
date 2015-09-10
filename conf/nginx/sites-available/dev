@@ -1,22 +1,43 @@
 server {
-    listen   127.0.0.1:8080 default_server;
+    listen 80 default_server;
     port_in_redirect off;
     client_max_body_size 256m;
-    set $projectName $host;
 
-    if ($host ~ ^www\.(.+)$) {
+    server_name ~^(?<projectName>.+)\.(?<pool>\w+?)$;
+    set $wwwRoot /var/www;
+    autoindex  off;
+
+    if ($projectName ~ ^www\.(.+)$) {
         set $projectName $1;
     }
-    
-    server_name $projectName;
-    
-    set $documentRoot /var/www/$projectName/public_html;
+
+    set $documentRoot $wwwRoot/$pool/$projectName/web;
+
+    if (!-d $documentRoot) {
+        set $documentRoot $wwwRoot/$pool/$projectName/public;
+    }
+
+    if (!-d $documentRoot) {
+        set $documentRoot $wwwRoot/$pool/$projectName;
+    }
+
+    if (!-d $documentRoot) {
+        internal;
+    }
 
     root   $documentRoot;
-    index  index.html index.htm index.php;
-    
+    index  index.html app.php index.php;
+
+    if (-f $documentRoot/app.php) {
+        set $cgiIndex /app.php;
+    }
+
+    if (!-f $documentRoot/app.php) {
+        set $cgiIndex /index.php;
+    }
+
     #deny magento protected files
-    location ~ ^(/app|/media/downloadable|/var|/shell|/pkginfo|/media/customer|/lib|/includes) {
+    location ~ ^(/app/|/media/downloadable/|/var/|/shell/|/pkginfo/|/media/customer/|/lib/|/includes/) {
         rewrite ^ /index.php last;
     }
 
@@ -25,16 +46,14 @@ server {
     location ~ /\.ht {
         deny  all;
     }
-    
+
     location / {
-        autoindex  on;
-        index index.html index.php;
         try_files $uri $uri/ @handler;
     }
 
     ## Common front handler
-    location @handler { 
-        rewrite / /index.php;
+    location @handler {
+        rewrite / $cgiIndex;
     }
 
     # Set static files cache lifetime
@@ -43,20 +62,20 @@ server {
         expires 1h; # cahe 1h
         add_header Cache-Control public;
     }
-    
+
     ## Forward paths like /js/index.php/x.js to relevant handler
-    location ~ .php/ { 
+    location ~ .php/ {
         rewrite ^(.*.php)/ $1 last;
     }
-    
+
     ## Process .php files
     location ~ ^.+\.php {
         # If file not found rewrite to index
-        if (!-e $request_filename) { 
-            rewrite / /index.php last; 
+        if (!-e $request_filename) {
+            rewrite / $cgiIndex last;
         }
-        fastcgi_pass                    unix:/var/run/php5-fpm.sock;
-        fastcgi_index                   index.php;
+
+        fastcgi_pass                    127.0.0.1:9000;
         fastcgi_split_path_info         ^(.+\.php)(.*)$;
         include                         fastcgi_params;
         fastcgi_param  SCRIPT_FILENAME  $documentRoot$fastcgi_script_name;
