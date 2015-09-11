@@ -78,7 +78,7 @@ chown www-data:www-data -R /usr/share/php/xhprof_html
 cat <<EOF  > /var/www/.xhprof-header.php
 <?php
 
-if (&& extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
+if (extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
     require '/usr/share/php/xhprof_lib/utils/xhprof_lib.php';
     require '/usr/share/php/xhprof_lib/utils/xhprof_runs.php';
     xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);

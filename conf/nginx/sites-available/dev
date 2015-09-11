@@ -21,10 +21,6 @@ server {
         set $documentRoot $wwwRoot/$pool/$projectName;
     }
 
-    if (!-d $documentRoot) {
-        internal;
-    }
-
     root   $documentRoot;
     index  index.html app.php index.php;
 
@@ -52,7 +48,7 @@ server {
     }
 
     location /xhprof/ {
-        set $documentRoot /usr/share/php/xhprof_html
+        set $documentRoot /usr/share/php/xhprof_html;
         try_files $uri $uri/ @handler;
     }
 
@@ -80,7 +76,7 @@ server {
             rewrite / $cgiIndex last;
         }
 
-        fastcgi_pass                    127.0.0.1:9000;
+        fastcgi_pass                    unix:/var/run/php5-fpm.sock;
         fastcgi_split_path_info         ^(.+\.php)(.*)$;
         include                         fastcgi_params;
         fastcgi_param  SCRIPT_FILENAME  $documentRoot$fastcgi_script_name;
