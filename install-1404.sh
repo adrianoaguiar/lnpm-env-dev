@@ -75,7 +75,7 @@ mkdir /var/www
 chown www-data:www-data /var/www
 chown www-data:www-data -R /usr/share/php/xhprof_html
 
-cat <<EOF  | tee /var/www/.xhprof-header.php
+cat <<EOF  > /var/www/.xhprof-header.php
 <?php
 
 if (&& extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
@@ -86,7 +86,7 @@ if (&& extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
 
 EOF
 
-cat <<EOF  | tee /var/www/.xhprof-footer.php
+cat <<EOF  > /var/www/.xhprof-footer.php
 <?php
 if (isset(\$_GET['xhprof']) && extension_loaded('xhprof')) {
     \$profiler_namespace = 'myapp';  // namespace for your application
