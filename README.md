@@ -1,11 +1,21 @@
 Linux + Nginx + Php-fpm + MySql Dev Environment for Magento, Symfony, Laravel and others
 ===============================
 
-## Ubuntu Installation 14.04:
+## What will be installed
+
+* nginx - 1.8.0
+* php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl
+* xhprof - (php profiler, for enable in project just add "xhprof" param to query string in url, example: http://myapp.loc?xhprof)
+* percona-server - 5.6
+* composer - latest
+* git
+
+
+
+## Installation - Ubuntu 14.04:
 
 ```bash
-$ sudo su
-$ bash <(wget -nv -O - https://raw.githubusercontent.com/SergeyCherepanov/lnpm-env-dev/master/install-1404.sh)
+$ wget -nv -O - https://raw.githubusercontent.com/SergeyCherepanov/lnpm-env-dev/master/install-1404.sh | sudo bash
 ```
 
 ## Usage:

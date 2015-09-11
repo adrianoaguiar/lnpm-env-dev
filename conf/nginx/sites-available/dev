@@ -47,6 +47,11 @@ server {
         try_files $uri $uri/ @handler;
     }
 
+    location /xhprof/ {
+        set $documentRoot /usr/share/php/xhprof_html;
+        try_files $uri $uri/ @handler;
+    }
+
     ## Common front handler
     location @handler {
         rewrite / $cgiIndex;
