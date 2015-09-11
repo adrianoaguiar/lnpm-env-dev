@@ -6,7 +6,7 @@ Linux + Nginx + Php-fpm + MySql Dev Environment for Magento, Symfony, Laravel an
 * nginx - 1.8.0
 * php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl
 * xhprof - (php profiler, for enable in project just add "xhprof" param to query string in url, example: http://myapp.loc?xhprof)
-* percona-server - 5.6
+* percona-server - 5.5
 * composer - latest
 * git
 
@@ -27,3 +27,5 @@ For example we'll use *website.loc* hostname for project on local machine
 3. Project will be available by link: http://myapp.loc or http://www.myapp.loc
 
 > note: for third level domain like dev.myapp.loc you should put code to /var/www/loc/dev.myapp folder
+
+> mysql root password is: root

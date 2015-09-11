@@ -6,6 +6,11 @@ export LANGUAGE=en_US.UTF-8
 
 TMPDIR=/tmp/lnpm-env-dev
 
+DEBCONF_PREFIX="percona-server-server-5.5 percona-server-server"
+PERCONA_PW="root"
+echo "${DEBCONF_PREFIX}/root_password password $PERCONA_PW" | sudo debconf-set-selections
+echo "${DEBCONF_PREFIX}/root_password_again password $PERCONA_PW" | sudo debconf-set-selections
+
 # Clean tmp dir
 if [ -d ${TMPDIR} ]; then
     rm -rf ${TMPDIR}
@@ -28,7 +33,7 @@ apt-get update
 apt-get -y upgrade
 
 # Install Percona-Server
-apt-get -q -y install percona-server-server-5.6
+apt-get -q -y install percona-server-server-5.5
 
 # Install nginx + varnish + php-fpm
 apt-get install -q -y git unzip wget mysql-client nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
@@ -71,7 +76,7 @@ rm /var/lib/mysql/ibdata1
 rm /var/lib/mysql/ib_logfile0
 rm /var/lib/mysql/ib_logfile1
 
-mkdir /var/www
+mkdir -p /var/www
 chown www-data:www-data /var/www
 chown www-data:www-data -R /usr/share/php/xhprof_html
 
