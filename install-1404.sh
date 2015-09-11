@@ -31,8 +31,11 @@ cd $TMPDIR
 
 # Prepare environment config
 # --------------------
-unlink /etc/nginx/sites-available/default
 cp ./conf/nginx/sites-available/dev /etc/nginx/sites-available/dev
+
+unlink /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/dev
+
 cp ./conf/mysql/my.cnf /etc/mysql/my.cnf
 cp ./conf/php/php.ini /etc/php5/fpm/php.ini
 mkdir /var/www
