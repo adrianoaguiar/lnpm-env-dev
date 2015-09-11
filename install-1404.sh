@@ -36,7 +36,7 @@ apt-get -y upgrade
 apt-get -q -y install percona-server-server-5.5
 
 # Install nginx + varnish + php-fpm
-apt-get install -q -y git unzip wget mysql-client nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
+apt-get install -q -y git unzip wget nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
 php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
 
 # Install xhprof
