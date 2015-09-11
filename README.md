@@ -3,12 +3,12 @@ Linux + Nginx + Php-fpm + MySql Dev Environment for Magento, Symfony, Laravel an
 
 ## What will be installed
 
-1 .nginx - 1.8.0
-2. php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl
-3. xhprof - (php profiler, for enable in project just add "xhprof" param to query string in url, example: http://myapp.loc?xhprof)
-4. percona-server - 5.6
-5. composer - latest
-6. git
+* nginx - 1.8.0
+* php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl
+* xhprof - (php profiler, for enable in project just add "xhprof" param to query string in url, example: http://myapp.loc?xhprof)
+* percona-server - 5.6
+* composer - latest
+* git
 
 
 

@@ -6,6 +6,11 @@ export LANGUAGE=en_US.UTF-8
 
 TMPDIR=/tmp/lnpm-env-dev
 
+# Clean tmp dir
+if [ -d ${TMPDIR} ]; then
+    rm -rf ${TMPDIR}
+fi
+
 # Nginx repo
 add-apt-repository -y ppa:nginx/stable
 
@@ -26,7 +31,7 @@ apt-get -y upgrade
 apt-get -q -y install percona-server-server-5.6
 
 # Install nginx + varnish + php-fpm
-apt-get install -q -y git mysql-client nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
+apt-get install -q -y git unzip wget mysql-client nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
 php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
 
 # Install xhprof
@@ -36,17 +41,19 @@ pecl install -f xhprof
 php5enmod mcrypt
 
 # Install graphviz
-apt-get autoremove -y graphviz libpathplan4
-apt-get install graphviz
+apt-get autoremove -q -y graphviz libpathplan4
+apt-get install -q -y graphviz
 
 # Install composer
 curl -s https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer.phar
 ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
-# Clone configs
-git clone  https://github.com/SergeyCherepanov/lnpm-env-dev.git $TMPDIR
-cd $TMPDIR
+# Get configs
+wget -O /tmp/conf.zip https://github.com/SergeyCherepanov/lnpm-env-dev/archive/master.zip
+unzip /tmp/conf.zip -d ${TMPDIR}
+rm /tmp/conf.zip
+cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | head -1)
 
 # Prepare environment configs
 # --------------------
