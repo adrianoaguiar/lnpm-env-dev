@@ -52,7 +52,9 @@ Install Vagrant plugins:
     $ cd lnpm-env-dev
     $ vagrant up
 
+> If you want to change project hostname name, you must edit Vagrantfile and replace `NAME="lnpm"` to `NAME="youprojectname"`
 > Source code should be located in **www** folder
-
 > Project will be available on: http://lnpm.loc
+
+
 
