@@ -1,4 +1,8 @@
 Vagrant.configure(2) do |config|
+  DATABASE_NAME="lnpm" # !!! CHANGE IT TO DB NAME !!!
+  DATABASE_USER="lnpm" # !!! CHANGE IT TO DB USER NAME !!!
+  DATABASE_PASSWORD="lnpm" # !!! CHANGE IT TO DB USER PASSWORD!!!
+
   NAME="lnpm" # !!! CHANGE IT TO YOUR PROJECT NAME !!!
   HOSTNAME=NAME+".loc"
 
@@ -55,5 +59,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, :path => "provision/enable-swap.sh"
   config.vm.provision :shell, :path => "provision/bootstrap.sh"
   config.vm.provision :shell, :path => "install-1404.sh"
+  config.vm.provision :shell, :path => "provision/database.sh", :args => [DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
   config.vm.provision "shell", inline: 'echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; echo ""; echo "Your project available by next link: http://'+HOSTNAME+'"; echo ""; echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"'
 end

@@ -54,9 +54,11 @@ Install Vagrant plugins:
 
 > If you want to change project hostname name, you must edit Vagrantfile and replace `NAME="lnpm"` to `NAME="youprojectname"`
 
-> Source code should be located in **www** folder
+> If you want to change mysql credentials, you must edit it in Vagrantfile (by default db name, db user and db password is: lnpm)`
 
-> Project will be available on: http://lnpm.loc
+> Source code must be placed to **www** folder
+
+> By default project will be available on: http://youprojectname.loc (default is ttp://lnpm.loc)
 
 
 
