@@ -10,15 +10,15 @@ Linux + Nginx + Php-fpm + MySql Dev Environment for Magento, Symfony, Laravel an
 * composer - latest
 * git
 
+## Ubuntu 14.04
 
-
-## Installation - Ubuntu 14.04:
+#### Installation:
 
 ```bash
 $ wget -nv -O - https://raw.githubusercontent.com/SergeyCherepanov/lnpm-env-dev/master/install-1404.sh | sudo bash
 ```
 
-## Usage:
+#### Usage:
 
 For example we'll use *website.loc* hostname for project on local machine
 
@@ -29,3 +29,28 @@ For example we'll use *website.loc* hostname for project on local machine
 > note: for third level domain like dev.myapp.loc you should put code to /var/www/loc/dev.myapp folder
 
 > mysql root password is: root
+
+## Vagrant
+
+#### Installation
+
+Install VirtualBox https://www.virtualbox.org/wiki/Downloads
+
+Install Vagrant from http://www.vagrantup.com/downloads
+
+Install Vagrant plugins:
+
+    $ vagrant plugin install vagrant-hostmanager
+
+*Ubuntu/Debian Only:*
+
+    $ sudo apt-get install nfs-kernel-server nfs-common
+
+#### Usage
+
+    $ git clone git@github.com:SergeyCherepanov/lnpm-env-dev.git
+    $ cd lnpm-env-dev
+    $ vagrant up
+
+> Your project will be available on: http://lnpm.loc
+

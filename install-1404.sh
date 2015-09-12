@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+DIR=$(dirname $(readlink -f $0))
+TMPDIR=/tmp/lnpm-env-dev
+
 export DEBIAN_FRONTEND=noninteractive
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-
-TMPDIR=/tmp/lnpm-env-dev
 
 DEBCONF_PREFIX="percona-server-server-5.5 percona-server-server"
 PERCONA_PW="root"
@@ -54,23 +55,28 @@ curl -s https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer.phar
 ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
-# Get configs
-wget -O /tmp/conf.zip https://github.com/SergeyCherepanov/lnpm-env-dev/archive/master.zip
-unzip /tmp/conf.zip -d ${TMPDIR}
-rm /tmp/conf.zip
-cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | head -1)
+# Resolve environment configs
+if [ 'install-1404.sh' = $(basename `readlink -f $0`) ] && [ -d ${DIR}/conf ]; then
+    cp -r ${DIR}/conf ${TMPDIR}/conf
+else
+    wget -O /tmp/conf.zip https://github.com/SergeyCherepanov/lnpm-env-dev/archive/master.zip
+    unzip /tmp/conf.zip -d ${TMPDIR}
+    rm /tmp/conf.zip
+    cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | head -1)
+fi
 
 # Prepare environment configs
 # --------------------
-cp ./conf/nginx/sites-available/dev /etc/nginx/sites-available/dev
+
+mv ./conf/nginx/sites-available/dev /etc/nginx/sites-available/dev
+mv ./conf/mysql/my.cnf   /etc/mysql/my.cnf
+mv ./conf/php/php.ini    /etc/php5/fpm/php.ini
+mv ./conf/php/xhprof.ini /etc/php5/mods-available/xhprof.ini
+
+ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/dev
+ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
 
 unlink /etc/nginx/sites-enabled/default
-ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/dev
-
-cp ./conf/mysql/my.cnf   /etc/mysql/my.cnf
-cp ./conf/php/php.ini    /etc/php5/fpm/php.ini
-cp ./conf/php/xhprof.ini /etc/php5/mods-available/xhprof.ini
-ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
 
 rm /var/lib/mysql/ibdata1
 rm /var/lib/mysql/ib_logfile0
