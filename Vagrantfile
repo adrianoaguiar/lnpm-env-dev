@@ -1,5 +1,5 @@
 Vagrant.configure(2) do |config|
-  NAME="lnpm" # !!! CHANGE IT TOU YOUR PROJECT NAME !!!
+  NAME="lnpm" # !!! CHANGE IT TO YOUR PROJECT NAME !!!
   HOSTNAME=NAME+".loc"
 
   config.vm.box = "ubuntu/trusty64"
