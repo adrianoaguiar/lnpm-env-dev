@@ -1,4 +1,4 @@
-Linux + Nginx + Php-fpm + MySql Dev Environment for Magento, Symfony, Laravel and others
+Linux + Nginx + Php-fpm + MySql Development Environment for Magento, Symfony, Laravel and others
 ===============================
 
 ## What will be installed
