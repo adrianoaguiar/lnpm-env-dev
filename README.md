@@ -52,5 +52,7 @@ Install Vagrant plugins:
     $ cd lnpm-env-dev
     $ vagrant up
 
-> Your project will be available on: http://lnpm.loc
+> Source code should be located in **www** folder
+
+> Project will be available on: http://lnpm.loc
 
