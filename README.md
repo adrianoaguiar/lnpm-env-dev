@@ -8,14 +8,15 @@ Linux + Nginx + Php-fpm + MySql Development Environment for Magento, Symfony, La
 * xhprof - (php profiler, for enable in project just add "xhprof" param to query string in url, example: http://myapp.loc?xhprof)
 * percona-server - 5.5
 * composer - latest
-* git
 
 ## Ubuntu 14.04
 
 #### Installation:
 
 ```bash
-$ wget -nv -O - https://raw.githubusercontent.com/SergeyCherepanov/lnpm-env-dev/master/install-1404.sh | sudo bash
+$ sudo apt-get install git
+$ git clone git@github.com:SergeyCherepanov/lnpm-env-dev.git /tmp/lnpm-env-dev
+$ sudo bash /tmp/lnpm-env-dev/install-1404.sh
 ```
 
 #### Usage:
