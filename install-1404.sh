@@ -34,7 +34,7 @@ apt-get update
 apt-get -y upgrade
 
 # Install Percona-Server
-apt-get -q -y install percona-server-server-5.5 percona-server-client
+apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 
 # Install nginx + varnish + php-fpm
 apt-get install -q -y git unzip nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
