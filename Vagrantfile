@@ -15,7 +15,9 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", type: "dhcp"
 
   if Vagrant::Util::Platform.windows?
-    config.vm.synced_folder "www", "/var/www/loc/" + NAME
+    # config.vm.synced_folder "www", "/var/www/loc/" + NAME
+    config.sync.host_folder  = "www"
+    config.sync.guest_folder = "/var/www/loc/" + NAME
   else
     config.vm.synced_folder "www", "/var/www/loc/" + NAME, type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
     config.nfs.map_uid = Process.uid
