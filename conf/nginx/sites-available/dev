@@ -47,8 +47,9 @@ server {
         try_files $uri $uri/ @handler;
     }
 
-    location /xhprof/ {
+    location ~ ^/xhprof/ {
         set $documentRoot /usr/share/php/xhprof_html;
+        set $cgiIndex /index.php;
         try_files $uri $uri/ @handler;
     }
 
