@@ -22,7 +22,7 @@ server {
     }
 
     root   $documentRoot;
-    index  index.html app.php index.php;
+    index  app.php index.php index.html;
 
     if (-f $documentRoot/app.php) {
         set $cgiIndex /app.php;
