@@ -15,7 +15,7 @@ Linux + Nginx + Php-fpm + MySql Development Environment for Magento, Symfony, La
 
 ```bash
 $ sudo apt-get install git
-$ git clone git@github.com:SergeyCherepanov/lnpm-env-dev.git /tmp/lnpm-env-dev
+$ git clone https://github.com/SergeyCherepanov/lnpm-env-dev.git /tmp/lnpm-env-dev
 $ sudo bash /tmp/lnpm-env-dev/install-1404.sh
 ```
 
@@ -49,7 +49,7 @@ Install Vagrant plugins:
 
 #### Usage
 
-    $ git clone git@github.com:SergeyCherepanov/lnpm-env-dev.git
+    $ git clone https://github.com/SergeyCherepanov/lnpm-env-dev.git
     $ cd lnpm-env-dev
     $ vagrant up
 
