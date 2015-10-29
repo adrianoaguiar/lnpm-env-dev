@@ -5,7 +5,7 @@ Linux + Nginx + Php-fpm + MySql Development Environment for Magento, Symfony, La
 
 * nginx - 1.8.0
 * php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl
-* xhprof - (php profiler, for enable in project just add "xhprof" param to query string in url, example: http://myapp.loc?xhprof)
+* xhprof - (php profiler, for activate on the page just add "xhprof" param to url query string, example: http://myapp.loc?xhprof)
 * percona-server - 5.5
 * composer - latest
 
