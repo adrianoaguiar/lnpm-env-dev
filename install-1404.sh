@@ -56,8 +56,9 @@ mv composer.phar /usr/local/bin/composer.phar
 ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
 # Resolve environment configs
-if [ 'install-1404.sh' = $(basename `readlink -f $0`) ] && [ -d ${DIR}/conf ]; then
+if [ 'install-1404.sh' = "$(basename `readlink -f $0`)" ] && [ -d ${DIR}/conf ]; then
     cp -r ${DIR}/conf ${TMPDIR}/conf
+    cd ${TMPDIR}
 else
     wget -O /tmp/conf.zip https://github.com/SergeyCherepanov/lnpm-env-dev/archive/master.zip
     unzip /tmp/conf.zip -d ${TMPDIR}
@@ -67,11 +68,10 @@ fi
 
 # Prepare environment configs
 # --------------------
-
 mv ./conf/nginx/sites-available/dev /etc/nginx/sites-available/dev
-mv ./conf/mysql/my.cnf   /etc/mysql/my.cnf
-mv ./conf/php/php.ini    /etc/php5/fpm/php.ini
-mv ./conf/php/xhprof.ini /etc/php5/mods-available/xhprof.ini
+mv ./conf/mysql/my.cnf              /etc/mysql/my.cnf
+mv ./conf/php/php.ini               /etc/php5/fpm/php.ini
+mv ./conf/php/xhprof.ini            /etc/php5/mods-available/xhprof.ini
 
 ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/dev
 ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
