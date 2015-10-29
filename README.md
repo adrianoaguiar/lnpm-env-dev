@@ -14,7 +14,7 @@ Linux + Nginx + Php-fpm + MySql Development Environment for Magento, Symfony, La
 #### Installation:
 
 ```bash
-$ sudo apt-get install git
+$ sudo apt-get -q -y install git
 $ git clone https://github.com/SergeyCherepanov/lnpm-env-dev.git /tmp/lnpm-env-dev
 $ sudo bash /tmp/lnpm-env-dev/install-1404.sh
 ```
@@ -45,7 +45,7 @@ Install Vagrant plugins:
 
 *Ubuntu/Debian Only:*
 
-    $ sudo apt-get install nfs-kernel-server nfs-common
+    $ sudo apt-get -q -y install nfs-kernel-server nfs-common
 
 #### Usage
 
