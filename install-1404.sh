@@ -33,12 +33,28 @@ echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /e
 apt-get update
 apt-get -y upgrade
 
+# Install base packages
+apt-get install -q -y git-core unzip curl zlib1g-dev build-essential libssl-dev \
+libreadline-dev libyaml-dev python-software-properties \
+libxml2-dev libxslt1-dev libcurl4-openssl-dev libsqlite3-dev sqlite3 \
+libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+
 # Install Percona-Server
 apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 
 # Install nginx + php-fpm
-apt-get install -q -y git unzip nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
+apt-get install -q -y nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
 php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
+
+# Install Compass
+curl -L https://get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+echo "source ~/.rvm/scripts/rvm" >> ~/.bashrc
+rvm install 2.1.2
+rvm use 2.1.2 --default
+ruby -v
+
+gem install compass
 
 # Install xhprof
 pecl install -f xhprof
