@@ -29,7 +29,6 @@ echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/
 echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /etc/apt/sources.list.d/percona.list
 
 # Update
-# --------------------
 apt-get update
 apt-get -y upgrade
 
