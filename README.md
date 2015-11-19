@@ -6,8 +6,8 @@ Linux + Nginx + Php-fpm + MySql Development Environment for Magento, Symfony, La
 * nginx - 1.8.0
 * php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube, xhprof
 * percona-server - 5.5
-* composer - latest
-* ruby-compass
+* composer
+* compass
 
 ## Ubuntu 14.04
 
