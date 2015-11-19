@@ -93,9 +93,7 @@ mv ./conf/php/php.ini               /etc/php5/fpm/php.ini
 mv ./conf/php/xhprof.ini            /etc/php5/mods-available/xhprof.ini
 
 ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/dev
-
-# !!!WARNING!!! ENABLING XHPROF CAN BE CAUSE TO CONFLICT WITH IONCUBE 
-# ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
+ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
 
 unlink /etc/nginx/sites-enabled/default
 
