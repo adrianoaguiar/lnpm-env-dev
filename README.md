@@ -4,10 +4,10 @@ Linux + Nginx + Php-fpm + MySql Development Environment for Magento, Symfony, La
 ## What will be installed
 
 * nginx - 1.8.0
-* php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl
-* xhprof - (php profiler, for activate on the page just add "xhprof" param to url query string, example: http://myapp.loc?xhprof)
+* php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube, xhprof
 * percona-server - 5.5
 * composer - latest
+* ruby-compass
 
 ## Ubuntu 14.04
 
