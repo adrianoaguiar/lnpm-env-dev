@@ -1,4 +1,4 @@
-Linux-Nginx-Php-MySql-Compass Development Environment for Magento, Symfony, Laravel and others
+Linux-Nginx-Php-MySql-Compass Dev Environment for Magento, Symfony, Laravel and others
 ===============================
 
 ## What will be installed
