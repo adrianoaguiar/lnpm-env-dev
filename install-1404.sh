@@ -66,7 +66,7 @@ apt-get autoremove -q -y graphviz libpathplan4
 apt-get install -q -y graphviz
 
 # Install Compass
-apt-get install ruby ruby-compass
+apt-get install -q -y ruby ruby-compass
 
 
 # Install composer
