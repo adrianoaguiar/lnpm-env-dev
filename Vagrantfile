@@ -5,14 +5,13 @@ Vagrant.configure(2) do |config|
 
   NAME="lnpm" # !!! CHANGE IT TO YOUR PROJECT NAME !!!
   HOSTNAME=NAME+".loc"
-
-  config.vm.box = "ubuntu/trusty64"
+  
   config.vm.provider "virtualbox" do |v|
+    config.vm.box = "ubuntu/trusty64"
+    config.vm.network "private_network", type: "dhcp"
     v.memory = 2048
     v.cpus = 2
   end
-
-  config.vm.network "private_network", type: "dhcp"
 
   if Vagrant::Util::Platform.windows?
     config.vm.synced_folder "www", "/var/www/loc/" + NAME
