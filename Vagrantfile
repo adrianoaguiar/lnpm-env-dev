@@ -14,9 +14,9 @@ Vagrant.configure(2) do |config|
   end
 
   if Vagrant::Util::Platform.windows?
-    config.vm.synced_folder "www", "/var/www/loc/" + NAME
+    config.vm.synced_folder "www", "/var/www"
   else
-    config.vm.synced_folder "www", "/var/www/loc/" + NAME, type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
+    config.vm.synced_folder "www", "/var/www", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
     config.nfs.map_uid = Process.uid
     config.nfs.map_gid = Process.gid
   end
