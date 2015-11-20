@@ -44,11 +44,11 @@ Install Vagrant plugins:
     $ vagrant plugin install vagrant-hostmanager
 
 *Ubuntu/Debian Only:*
-    Install NFS Server and tools
+Install NFS Server and tools
 
     $ sudo apt-get -q -y install nfs-kernel-server nfs-common
     
-    Enable ip forwarding
+Enable ip forwarding
     
     $ sudo sed -i -e "s/#\s*net.ipv4.ip_forward\s*=.*/net.ipv4.ip_forward = 1/g" /etc/sysctl.conf
     $ sudo sysctl -p /etc/sysctl.conf
