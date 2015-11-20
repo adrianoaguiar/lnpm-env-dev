@@ -20,6 +20,10 @@ server {
     if (!-d $documentRoot) {
         set $documentRoot $wwwRoot/$pool/$projectName;
     }
+    
+    if (!-d $documentRoot) {
+        set $documentRoot $wwwRoot;
+    }
 
     root   $documentRoot;
     index  app.php index.php index.html;
