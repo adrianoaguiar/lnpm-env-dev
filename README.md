@@ -43,7 +43,10 @@ Install Vagrant plugins:
 
     $ vagrant plugin install vagrant-hostmanager
 
-*Ubuntu/Debian Only:*
+**Linux Only:**
+
+*Ubuntu/Debian*
+
 Install NFS Server and tools
 
     $ sudo apt-get -q -y install nfs-kernel-server nfs-common
