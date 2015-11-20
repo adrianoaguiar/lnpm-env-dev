@@ -43,6 +43,8 @@ Vagrant.configure(2) do |config|
         ifconfigIPs[0..ifconfigIPs.size].each do |ip|
           ip = ip.first
           
+          next if /^(10|127)\.\d+\.\d+\.\d+$/.match ip
+          
           if Vagrant::Util::Platform.windows?
             next unless system "ping #{ip} -n 1 -w 100>nul 2>&1"
           else
