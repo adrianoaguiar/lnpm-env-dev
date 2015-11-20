@@ -42,8 +42,12 @@ Vagrant.configure(2) do |config|
         ifconfigIPs = buffer.scan(/inet addr:(\d+\.\d+\.\d+\.\d+)/)
         ifconfigIPs[0..ifconfigIPs.size].each do |ip|
           ip = ip.first
-
-          next unless system "ping -c1 -t1 #{ip} > /dev/null"
+          
+          if Vagrant::Util::Platform.windows?
+            next unless system "ping #{ip} -n 1 -w 100>nul 2>&1"
+          else
+            next unless system "ping -c1 -t1 #{ip} > /dev/null"
+          end
 
           ips.push(ip) unless ips.include? ip
         end
