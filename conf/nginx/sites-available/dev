@@ -10,19 +10,21 @@ server {
     if ($projectName ~ ^www\.(.+)$) {
         set $projectName $1;
     }
-
-    set $documentRoot $wwwRoot/$pool/$projectName/web;
-
-    if (!-d $documentRoot) {
-        set $documentRoot $wwwRoot/$pool/$projectName/public;
-    }
-
-    if (!-d $documentRoot) {
-        set $documentRoot $wwwRoot/$pool/$projectName;
-    }
     
+    set $projectDir $wwwRoot/$pool/$projectName;
+    
+    if (!-d $projectDir) {
+        set $projectDir $wwwRoot;
+    }
+
+    set $documentRoot $projectDir/web;
+
     if (!-d $documentRoot) {
-        set $documentRoot $wwwRoot;
+        set $documentRoot $projectDir/public;
+    }
+
+    if (!-d $documentRoot) {
+        set $documentRoot $projectDir;
     }
 
     root   $documentRoot;
