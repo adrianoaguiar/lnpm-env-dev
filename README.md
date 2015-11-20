@@ -68,7 +68,7 @@ Enable ip forwarding
 
 > Source code must be placed to **www** folder
 
-> By default project will be available on: http://youprojectname.loc (default is ttp://lnpm.loc)
+> Project will be available on: http://youprojectname.loc (by default is http://lnpm.loc)
 
 
 
