@@ -82,7 +82,7 @@ else
     wget -O /tmp/conf.zip https://github.com/SergeyCherepanov/lnpm-env-dev/archive/master.zip
     unzip /tmp/conf.zip -d ${TMPDIR}
     rm /tmp/conf.zip
-    cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | head -1)
+    cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | grep lnpm-env-dev | head -1)
 fi
 
 # Prepare environment configs
