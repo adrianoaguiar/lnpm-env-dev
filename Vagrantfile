@@ -8,6 +8,7 @@ Vagrant.configure(2) do |config|
   
   config.vm.provider "virtualbox" do |v|
     config.vm.box = "ubuntu/trusty64"
+    #config.vm.network :private_network, ip: "192.168.41.101", auto_config: false
     config.vm.network "private_network", type: "dhcp"
     v.memory = 2048
     v.cpus = 2
