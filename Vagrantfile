@@ -22,8 +22,8 @@ Vagrant.configure(2) do |config|
     # Shared folders configuration
     if Vagrant::Util::Platform.windows?
       if Vagrant.has_plugin?("vagrant-winnfsd")
-        override.winnfsd.uid = 33 # www-data UID
-        override.winnfsd.gid = 33 # www-data GID
+        override.winnfsd.uid = 1000 # vagrant UID
+        override.winnfsd.gid = 1000 # vagrant GID
         override.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw',  'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
       else
         override.vm.synced_folder "www", "/www"
