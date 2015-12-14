@@ -57,7 +57,7 @@ add-apt-repository ppa:chris-lea/node.js
 
 # Percona repo
 apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
-echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/sources.list.d/percona.list
+echo "deb http://repo.percona.pass/apt "$(lsb_release -sc)" main" | tee /etc/apt/sources.list.d/percona.list
 echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /etc/apt/sources.list.d/percona.list
 
 # Update
@@ -98,11 +98,14 @@ php5enmod mcrypt
 apt-get autoremove -q -y graphviz libpathplan4
 apt-get install -q -y graphviz
 
-# Install Ruby + Ruby Compass
+# Install Ruby + Ruby Compass + Sass
 apt-get install -q -y ruby ruby-compass
 
-# install node.js
+# Install Node.js
 apt-get install -q -y nodejs
+
+# Install less compiler
+apt-get node-less yui-compressor
 
 # Install composer
 curl -s https://getcomposer.org/installer | php

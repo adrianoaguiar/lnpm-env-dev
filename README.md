@@ -1,13 +1,18 @@
-Linux-Nginx-Php-MySql-Compass Dev Environment for Magento, Symfony, Laravel
-===============================
+Vagrant Development Environment for Symfony, Laravel, Magento
+==============================================================
+
+## Supported providers:
+
+* VirtualBox
+* Docker
 
 ## What will be installed
 
-* nginx - 1.8.0
-* php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube, xhprof
-* percona-server - 5.5
+* nginx v.1.8
+* php v.5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube, xhprof
 * composer
-* compass
+* percona-server 
+* node.js, ruby, scss, less, compass
 
 ## Ubuntu 14.04
 
