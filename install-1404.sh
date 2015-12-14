@@ -126,10 +126,11 @@ ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
 
 unlink /etc/nginx/sites-enabled/default
 
-sed -i -e "s/\s*set\s\s*\$wwwRoot\s\s*\/var\/www;/    set \$wwwRoot ${WWW_ROOT};/g" /etc/nginx/sites-available/dev
-sed -i -e "s/\s*user\s\s*www-data;/user ${WWW_USER};/g"                             /etc/nginx/nginx.conf
-sed -i -e "s/\s*user\s*=\s*www-data/user=${WWW_USER};/g"                            /etc/php5/fpm/pool.d/www.conf
-sed -i -e "s/\s*group\s*=\s*www-data/group=${WWW_GROUP};/g"                         /etc/php5/fpm/pool.d/www.conf
+
+sed -i -e "s/\s*set\s\s*\$wwwRoot\s\s*\/var\/www\;/    set \$wwwRoot "$(echo ${WWW_ROOT} | sed -e 's/[\.\:\/&]/\\\\&/g')";/g" /etc/nginx/sites-available/dev
+sed -i -e "s/\s*user\s\s*www-data\;/user ${WWW_USER};/g"   /etc/nginx/nginx.conf
+sed -i -e "s/\s*user\s*=\s*www-data/user=${WWW_USER}/g"    /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/\s*group\s*=\s*www-data/group=${WWW_GROUP}/g" /etc/php5/fpm/pool.d/www.conf
 
 rm /var/lib/mysql/ibdata1
 rm /var/lib/mysql/ib_logfile0

@@ -18,7 +18,9 @@ Vagrant.configure(2) do |config|
 
   # Docker provider
   config.vm.provider "docker" do |d|
-    d.image = "ubuntu:14.04"
+    config.ssh.port = 22
+    d.build_dir = "vagrant-docker"
+    d.has_ssh = true
   end
 
   # Shared folders configuration
