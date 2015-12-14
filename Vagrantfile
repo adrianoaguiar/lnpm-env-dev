@@ -9,43 +9,6 @@ Vagrant.configure(2) do |config|
   config.vm.hostname = HOSTNAME
   config.vm.network "private_network", type: "dhcp"
 
-  # Virtualbox provider
-  config.vm.provider "virtualbox" do |v, override|
-    override.vm.box = "ubuntu/trusty64"
-    v.memory = 2048
-    v.cpus = 2
-
-    # Setup vagrant base system
-    override.vm.provision :shell, :path => "vagrant-virtualbox/provision/enable-swap.sh"
-    override.vm.provision :shell, :path => "vagrant-virtualbox/provision/bootstrap.sh"
-
-    # Shared folders configuration
-    if Vagrant::Util::Platform.windows?
-      if Vagrant.has_plugin?("vagrant-winnfsd")
-        override.winnfsd.uid = 1000 # vagrant UID
-        override.winnfsd.gid = 1000 # vagrant GID
-        override.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw',  'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
-      else
-        override.vm.synced_folder "www", "/www"
-      end
-    else
-      override.nfs.map_uid = Process.uid
-      override.nfs.map_gid = Process.gid
-      override.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
-    end
-  end
-
-  # Docker provider
-  config.vm.provider "docker" do |d, override|
-    # d.image    = 'ubuntu:14.04'
-    d.build_dir  = "vagrant-docker"
-    d.privileged = true
-    d.has_ssh    = true
-    override.vm.synced_folder "www", "/www"
-    override.nfs.functional = false
-    override.ssh.port = 22
-  end
-
   # Hostnamager configuration
   config.hostmanager.enabled           = true
   config.hostmanager.manage_host       = true
@@ -87,12 +50,58 @@ Vagrant.configure(2) do |config|
   # Env
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
-  # Install environment
-  config.vm.provision :shell, :path => "install-1404.sh", :args => ["--www-root", "/www", "--www-user", "vagrant", "--www-group", "vagrant"]
+  # Virtualbox provider
+  config.vm.provider "virtualbox" do |v, override|
+    override.vm.box = "ubuntu/trusty64"
+    v.memory = 2048
+    v.cpus = 2
 
-  # Configure default database credentials
-  config.vm.provision :shell, :path => "default/db.sh", :args => [DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
+    # Shared folders configuration
+    if Vagrant::Util::Platform.windows?
+      if Vagrant.has_plugin?("vagrant-winnfsd")
+        override.winnfsd.uid = 1000 # vagrant UID
+        override.winnfsd.gid = 1000 # vagrant GID
+        override.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw',  'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
+      else
+        override.vm.synced_folder "www", "/www"
+      end
+    else
+      override.nfs.map_uid = Process.uid
+      override.nfs.map_gid = Process.gid
+      override.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
+    end
 
-  # Finish
-  config.vm.provision :shell, :path => "default/completion.sh", :args => [HOSTNAME, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
+    # Setup vagrant base system
+    override.vm.provision :shell, :path => "vagrant-virtualbox/provision/enable-swap.sh"
+    override.vm.provision :shell, :path => "vagrant-virtualbox/provision/bootstrap.sh"
+
+    # Install environment
+    override.vm.provision :shell, :path => "install-1404.sh", :args => ["--www-root", "/www", "--www-user", "vagrant", "--www-group", "vagrant"]
+
+    # Configure default database credentials
+    override.vm.provision :shell, :path => "default/db.sh", :args => [DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
+
+    # Finish
+    override.vm.provision :shell, :path => "default/completion.sh", :args => [HOSTNAME, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
+  end
+
+  # Docker provider
+  config.vm.provider "docker" do |d, override|
+    # d.image    = 'ubuntu:14.04'
+    d.build_dir  = "vagrant-docker"
+    d.privileged = true
+    d.has_ssh    = true
+    override.vm.synced_folder "www", "/www"
+    override.nfs.functional = false
+    override.ssh.port = 22
+
+    # Install environment
+    override.vm.provision :shell, :path => "install-1404.sh", :args => ["--www-root", "/www", "--www-user", "vagrant", "--www-group", "vagrant"]
+
+    # Configure default database credentials
+    override.vm.provision :shell, :path => "default/db.sh", :args => [DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
+
+    # Finish
+    override.vm.provision :shell, :path => "default/completion.sh", :args => [HOSTNAME, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
+  end
 end
