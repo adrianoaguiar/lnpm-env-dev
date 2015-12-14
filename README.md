@@ -59,7 +59,7 @@ Install Vagrant plugins:
 
 > Source code must be placed to **www** folder
 
-> By default project will be available on: http://youprojectname.loc (default is ttp://lnpm.loc)
+> By default project will be available on: http://youprojectname.loc (default it's: http://lnpm.loc)
 
 
 

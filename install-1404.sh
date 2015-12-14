@@ -7,6 +7,33 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
+while [[ $# > 1 ]]
+do
+key="$1"
+case ${key} in
+    --www-root)
+    WWW_ROOT="$2"
+    shift
+    ;;
+    --www-user)
+    WWW_USER="$2"
+    shift
+    ;;
+    --www-group)
+    WWW_GROUP="$2"
+    shift
+    ;;
+    *)
+    # unknown option
+    ;;
+esac
+shift
+done
+
+[[ -z ${WWW_ROOT}  ]] && WWW_ROOT="/var/www"
+[[ -z ${WWW_USER}  ]] && WWW_USER="www-data"
+[[ -z ${WWW_GROUP} ]] && WWW_GROUP="www-data"
+
 DEBCONF_PREFIX="percona-server-server-5.5 percona-server-server"
 PERCONA_PW="root"
 echo "${DEBCONF_PREFIX}/root_password password $PERCONA_PW" | sudo debconf-set-selections
@@ -36,8 +63,14 @@ apt-get -y upgrade
 # Install Percona-Server
 apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 
-# Install nginx + php-fpm
-apt-get install -q -y git unzip nginx php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
+# Install tools
+apt-get install -q -y unzip git
+
+# Install nginx
+apt-get install -q -y nginx
+
+# Install php
+apt-get install -q -y php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
 php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
 
 # Install xhprof
@@ -56,7 +89,7 @@ mv composer.phar /usr/local/bin/composer.phar
 ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
 # Resolve environment configs
-if [ 'install-1404.sh' = "$(basename `readlink -f $0`)" ] && [ -d ${DIR}/conf ]; then
+if [ -d ${DIR}/conf ]; then
     cp -r ${DIR}/conf ${TMPDIR}/conf
     cd ${TMPDIR}
 else
@@ -78,15 +111,23 @@ ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
 
 unlink /etc/nginx/sites-enabled/default
 
+sed -i -e "s/\s*set\s\s*\$wwwRoot\s\s*\/var\/www;/    set \$wwwRoot ${WWW_ROOT};/g" /etc/nginx/sites-available/dev
+sed -i -e "s/\s*user\s\s*www-data;/user ${WWW_USER};/g"                             /etc/nginx/nginx.conf
+sed -i -e "s/\s*user\s*=\s*www-data/user=${WWW_USER};/g"                            /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/\s*group\s*=\s*www-data/group=${WWW_GROUP};/g"                         /etc/php5/fpm/pool.d/www.conf
+
 rm /var/lib/mysql/ibdata1
 rm /var/lib/mysql/ib_logfile0
 rm /var/lib/mysql/ib_logfile1
 
-mkdir -p /var/www
-chown www-data:www-data /var/www
-chown www-data:www-data -R /usr/share/php/xhprof_html
+if [ ! -d ${WWW_ROOT} ]; then
+    mkdir -p ${WWW_ROOT}
+    chown ${WWW_USER}:${WWW_GROUP} ${WWW_ROOT}
+fi
 
-cat <<EOF  > /var/www/.xhprof-header.php
+chown ${WWW_USER}:${WWW_GROUP} -R /usr/share/php/xhprof_html
+
+cat <<EOF  > ${WWW_ROOT}/.xhprof-header.php
 <?php
 
 if (extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
@@ -97,7 +138,7 @@ if (extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
 
 EOF
 
-cat <<EOF  > /var/www/.xhprof-footer.php
+cat <<EOF  > ${WWW_ROOT}/.xhprof-footer.php
 <?php
 if (isset(\$_GET['xhprof']) && extension_loaded('xhprof')) {
     \$profiler_namespace = 'myapp';  // namespace for your application
