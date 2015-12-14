@@ -136,11 +136,10 @@ rm /var/lib/mysql/ibdata1
 rm /var/lib/mysql/ib_logfile0
 rm /var/lib/mysql/ib_logfile1
 
-if [ ! -d ${WWW_ROOT} ]; then
-    mkdir -p ${WWW_ROOT}
-    chown ${WWW_USER}:${WWW_GROUP} ${WWW_ROOT}
-fi
+[[ ! -d ${WWW_ROOT} ]] && mkdir -p ${WWW_ROOT}
+[[ ! -f ${WWW_ROOT}/index.php ]] && echo "<?php phpinfo();" > ${WWW_ROOT}/index.php
 
+chown ${WWW_USER}:${WWW_GROUP} ${WWW_ROOT}
 chown ${WWW_USER}:${WWW_GROUP} -R /usr/share/php/xhprof_html
 
 cat <<EOF  > ${WWW_ROOT}/.xhprof-header.php
