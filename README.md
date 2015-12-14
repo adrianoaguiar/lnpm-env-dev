@@ -1,13 +1,13 @@
-Linux + Nginx + Php-fpm + MySql Development Environment for Magento, Symfony, Laravel and others
+Linux-Nginx-Php-MySql-Compass Dev Environment for Magento, Symfony, Laravel
 ===============================
 
 ## What will be installed
 
 * nginx - 1.8.0
-* php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl
-* xhprof - (php profiler, for activate on the page just add "xhprof" param to url query string, example: http://myapp.loc?xhprof)
+* php - 5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube, xhprof
 * percona-server - 5.5
-* composer - latest
+* composer
+* compass
 
 ## Ubuntu 14.04
 
@@ -43,9 +43,18 @@ Install Vagrant plugins:
 
     $ vagrant plugin install vagrant-hostmanager
 
-*Ubuntu/Debian Only:*
+**Linux Only:**
+
+*Ubuntu/Debian*
+
+Install NFS Server and tools
 
     $ sudo apt-get -q -y install nfs-kernel-server nfs-common
+    
+Enable ip forwarding
+    
+    $ sudo sed -i -e "s/#\s*net.ipv4.ip_forward\s*=.*/net.ipv4.ip_forward = 1/g" /etc/sysctl.conf
+    $ sudo sysctl -p /etc/sysctl.conf
 
 #### Usage
 
@@ -59,7 +68,7 @@ Install Vagrant plugins:
 
 > Source code must be placed to **www** folder
 
-> By default project will be available on: http://youprojectname.loc (default it's: http://lnpm.loc)
+> By default project will be available on: http://project.loc (default it's: http://lnpm.loc)
 
 
 

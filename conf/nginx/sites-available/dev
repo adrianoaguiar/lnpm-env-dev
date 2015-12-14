@@ -10,15 +10,21 @@ server {
     if ($projectName ~ ^www\.(.+)$) {
         set $projectName $1;
     }
+    
+    set $projectDir $wwwRoot/$pool/$projectName;
+    
+    if (!-d $projectDir) {
+        set $projectDir $wwwRoot;
+    }
 
-    set $documentRoot $wwwRoot/$pool/$projectName/web;
+    set $documentRoot $projectDir/web;
 
     if (!-d $documentRoot) {
-        set $documentRoot $wwwRoot/$pool/$projectName/public;
+        set $documentRoot $projectDir/public;
     }
 
     if (!-d $documentRoot) {
-        set $documentRoot $wwwRoot/$pool/$projectName;
+        set $documentRoot $projectDir;
     }
 
     root   $documentRoot;
@@ -92,5 +98,6 @@ server {
         fastcgi_busy_buffers_size       256k;
         fastcgi_temp_file_write_size    256k;
         fastcgi_param                   MAGE_IS_DEVELOPER_MODE  true;
+        fastcgi_param                   SERVER_NAME $host;
     }
 }

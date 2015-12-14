@@ -44,6 +44,8 @@ if [ -d ${TMPDIR} ]; then
     rm -rf ${TMPDIR}
 fi
 
+mkdir -p ${TMPDIR}
+
 # Nginx repo
 add-apt-repository -y ppa:nginx/stable
 
@@ -56,7 +58,6 @@ echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/
 echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /etc/apt/sources.list.d/percona.list
 
 # Update
-# --------------------
 apt-get update
 apt-get -y upgrade
 
@@ -64,7 +65,7 @@ apt-get -y upgrade
 apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 
 # Install tools
-apt-get install -q -y unzip git
+apt-get install -q -y unzip git-core
 
 # Install nginx
 apt-get install -q -y nginx
@@ -76,12 +77,26 @@ php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
 # Install xhprof
 pecl install -f xhprof
 
+# Install IonCube
+wget -O ${TMPDIR}/ioncube.tgz "http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_"$([[ "x86_64" = `arch` ]] && echo "x86-64" || echo "x86")".tar.gz"
+tar xvzf ${TMPDIR}/ioncube.tgz -C ${TMPDIR}
+PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
+PHP_EXTDIR=$(php -i | grep "^extension_dir" | awk '{print $3}')
+[[ ! -d ${PHP_EXTDIR} ]] && echo "Extension dir '${EXTDIR}' not found!" && exit 1
+cp "${TMPDIR}/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" ${PHP_EXTDIR}
+echo "zend_extension = ${PHP_EXTDIR}/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php5/mods-available/ioncube.ini
+ln -s /etc/php5/mods-available/ioncube.ini /etc/php5/cli/conf.d/0-ioncube.ini
+ln -s /etc/php5/mods-available/ioncube.ini /etc/php5/fpm/conf.d/0-ioncube.ini
+
 # Enabling mcrypt
 php5enmod mcrypt
 
 # Install graphviz
 apt-get autoremove -q -y graphviz libpathplan4
 apt-get install -q -y graphviz
+
+# Install Ruby + Ruby Compass
+apt-get install -q -y ruby ruby-compass
 
 # Install composer
 curl -s https://getcomposer.org/installer | php
@@ -96,7 +111,7 @@ else
     wget -O /tmp/conf.zip https://github.com/SergeyCherepanov/lnpm-env-dev/archive/master.zip
     unzip /tmp/conf.zip -d ${TMPDIR}
     rm /tmp/conf.zip
-    cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | head -1)
+    cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | grep lnpm-env-dev | head -1)
 fi
 
 # Prepare environment configs
