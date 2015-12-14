@@ -72,8 +72,8 @@ Vagrant.configure(2) do |config|
     end
 
     # Setup vagrant base system
-    override.vm.provision :shell, :path => "vagrant-virtualbox/provision/enable-swap.sh"
-    override.vm.provision :shell, :path => "vagrant-virtualbox/provision/bootstrap.sh"
+    override.vm.provision :shell, :path => "vagrant-virtualbox/enable-swap.sh"
+    override.vm.provision :shell, :path => "vagrant-virtualbox/bootstrap.sh"
 
     # Install environment
     override.vm.provision :shell, :path => "install-1404.sh", :args => ["--www-root", "/www", "--www-user", "vagrant", "--www-group", "vagrant"]
