@@ -53,28 +53,32 @@ Vagrant.configure(2) do |config|
   config.hostmanager.include_offline   = false
 
   # Dinamic ip resolver for vagrant hostmanager plugin
-  if Vagrant.has_plugin?("vagrant-hostmanager")
-    config.hostmanager.ip_resolver = proc do |vm, resolving_vm|
-      begin
-        buffer = '';
-          vm.communicate.execute("/sbin/ifconfig") do |type, data|
-          buffer += data if type == :stdout
-        end
+  config.hostmanager.ip_resolver = proc do |vm, resolving_vm|
+    begin
+      buffer = '';
+        vm.communicate.execute("/sbin/ifconfig") do |type, data|
+        buffer += data if type == :stdout
+      end
 
-        ips = []
-          ifconfigIPs = buffer.scan(/inet addr:(\d+\.\d+\.\d+\.\d+)/)
-          ifconfigIPs[0..ifconfigIPs.size].each do |ip|
-            ip = ip.first
+      ips = []
+        ifconfigIPs = buffer.scan(/inet addr:(\d+\.\d+\.\d+\.\d+)/)
+        ifconfigIPs[0..ifconfigIPs.size].each do |ip|
+          ip = ip.first
 
+          next if /^(10|127)\.\d+\.\d+\.\d+$/.match ip
+
+          if Vagrant::Util::Platform.windows?
+            next unless system "ping #{ip} -n 1 -w 100>nul 2>&1"
+          else
             next unless system "ping -c1 -t1 #{ip} > /dev/null"
-
-            ips.push(ip) unless ips.include? ip
           end
-          ips.first
-        rescue StandardError => exc
-          return
+
+          ips.push(ip) unless ips.include? ip
         end
-    end
+        ips.first
+      rescue StandardError => exc
+        return
+      end
   end
 
   # Avoid possible request "vagrant@127.0.0.1's password:" when "up" and "ssh"
