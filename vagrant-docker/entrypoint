@@ -1,0 +1,11 @@
+#!/bin/bash
+DEBIAN_FRONTEND=noninteractive
+
+umount /etc/hosts || {
+    echo "Could not umount /etc/hosts. Did you use --privileged?"
+    exit 1
+  }
+
+echo '127.0.0.1 localhost' > /etc/hosts
+
+exec $@

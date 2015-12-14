@@ -43,9 +43,13 @@ Install Vagrant plugins:
 
     $ vagrant plugin install vagrant-hostmanager
 
-**Linux Only:**
+Optional (windows host only): install nfs plugin
 
-*Ubuntu/Debian*
+    $ vagrant plugin install vagrant-winnfsd
+
+**Linux Only (Ubuntu):**
+
+**Provider: VirtualBox**
 
 Install NFS Server and tools
 
@@ -56,11 +60,33 @@ Enable ip forwarding
     $ sudo sed -i -e "s/#\s*net.ipv4.ip_forward\s*=.*/net.ipv4.ip_forward = 1/g" /etc/sysctl.conf
     $ sudo sysctl -p /etc/sysctl.conf
 
-#### Usage
+**Provider: Docker**
+
+Install Docker
+
+    $ curl -sL https://get.docker.io/ | sudo sh
+
+or 
+
+    $ wget -qO- https://get.docker.io/ | sudo sh
+
+if you get: `/usr/sbin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: Permission denied` run on the host:
+
+    $ sudo ln -s /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/
+    $ sudo apparmor_parser -R /etc/apparmor.d/usr.sbin.mysqld
+
+### Vagrant Usage
 
     $ git clone https://github.com/SergeyCherepanov/lnpm-env-dev.git
     $ cd lnpm-env-dev
+    
+Run with virtualbox provider
+
     $ vagrant up
+    
+Run with docker provider
+
+    $ vagrant up --provider=docker
 
 > If you want to change project hostname name, you must edit Vagrantfile and replace `NAME="lnpm"` to `NAME="youprojectname"`
 

@@ -6,36 +6,44 @@ Vagrant.configure(2) do |config|
 
   HOSTNAME=NAME+".loc"
 
-  config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = HOSTNAME
   config.vm.network "private_network", type: "dhcp"
 
   # Virtualbox provider
-  config.vm.provider "virtualbox" do |v|
+  config.vm.provider "virtualbox" do |v, override|
+    override.vm.box = "ubuntu/trusty64"
     v.memory = 2048
     v.cpus = 2
+
+    # Setup vagrant base system
+    override.vm.provision :shell, :path => "vagrant-virtualbox/provision/enable-swap.sh"
+    override.vm.provision :shell, :path => "vagrant-virtualbox/provision/bootstrap.sh"
+
+    # Shared folders configuration
+    if Vagrant::Util::Platform.windows?
+      if Vagrant.has_plugin?("vagrant-winnfsd")
+        override.winnfsd.uid = 33 # www-data UID
+        override.winnfsd.gid = 33 # www-data GID
+        override.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw',  'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
+      else
+        override.vm.synced_folder "www", "/www"
+      end
+    else
+      override.nfs.map_uid = Process.uid
+      override.nfs.map_gid = Process.gid
+      override.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
+    end
   end
 
   # Docker provider
-  config.vm.provider "docker" do |d|
-    config.ssh.port = 22
-    d.build_dir = "vagrant-docker"
-    d.has_ssh = true
-  end
-
-  # Shared folders configuration
-  if Vagrant::Util::Platform.windows?
-    if Vagrant.has_plugin?("vagrant-winnfsd")
-      config.winnfsd.uid = 33 # www-data UID
-      config.winnfsd.gid = 33 # www-data GID
-      config.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw',  'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
-    else
-      config.vm.synced_folder "www", "/www"
-    end
-  else
-    config.nfs.map_uid = Process.uid
-    config.nfs.map_gid = Process.gid
-    config.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
+  config.vm.provider "docker" do |d, override|
+    # d.image    = 'ubuntu:14.04'
+    d.build_dir  = "vagrant-docker"
+    d.privileged = true
+    d.has_ssh    = true
+    override.vm.synced_folder "www", "/www"
+    override.nfs.functional = false
+    override.ssh.port = 22
   end
 
   # Hostnamager configuration
@@ -75,12 +83,8 @@ Vagrant.configure(2) do |config|
   # Env
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
-  # Setup vagrant base system
-  config.vm.provision :shell, :path => "vagrant/provision/enable-swap.sh"
-  config.vm.provision :shell, :path => "vagrant/provision/bootstrap.sh"
-
   # Install environment
-  config.vm.provision :shell, :path => "install-1404.sh", :args => ["--www-root", "/www"]
+  config.vm.provision :shell, :path => "install-1404.sh", :args => ["--www-root", "/www", "--www-user", "vagrant", "--www-group", "vagrant"]
 
   # Configure default database credentials
   config.vm.provision :shell, :path => "default/db.sh", :args => [DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
