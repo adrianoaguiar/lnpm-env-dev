@@ -52,6 +52,9 @@ add-apt-repository -y ppa:nginx/stable
 # Graphviz repo
 apt-add-repository -y ppa:dperry/ppa-graphviz-test
 
+# Node.js repo
+add-apt-repository ppa:chris-lea/node.js
+
 # Percona repo
 apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
 echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/sources.list.d/percona.list
@@ -97,6 +100,9 @@ apt-get install -q -y graphviz
 
 # Install Ruby + Ruby Compass
 apt-get install -q -y ruby ruby-compass
+
+# install node.js
+apt-get install -q -y nodejs
 
 # Install composer
 curl -s https://getcomposer.org/installer | php
