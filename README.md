@@ -82,7 +82,8 @@ Run with docker provider
 ## Ubuntu 14.04 Installation
 
 ```bash
-$ sudo apt-get -q -y install git
+$ sudo apt-get -qy update
+$ sudo apt-get -qy install git
 $ git clone https://github.com/SergeyCherepanov/lnpm-env-dev.git /tmp/lnpm-env-dev
 $ sudo bash /tmp/lnpm-env-dev/install-1404.sh
 ```
