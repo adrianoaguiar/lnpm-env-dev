@@ -71,13 +71,13 @@ apt-get -y upgrade
 apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 
 # Install tools
-apt-get install -q -y unzip git-core wget
+apt-get install -yq unzip git-core wget
 
 # Install nginx
-apt-get install -q -y nginx
+apt-get install -yq nginx
 
 # Install php
-apt-get install -q -y php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
+apt-get install -yq php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
 php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
 
 # Install xhprof
@@ -98,17 +98,17 @@ ln -s /etc/php5/mods-available/ioncube.ini /etc/php5/fpm/conf.d/0-ioncube.ini
 php5enmod mcrypt
 
 # Install graphviz
-apt-get autoremove -q -y graphviz libpathplan4
-apt-get install -q -y graphviz
+apt-get autoremove -yq graphviz libpathplan4
+apt-get install -yq graphviz
 
 # Install Ruby + Ruby Compass + Sass
-apt-get install -q -y ruby ruby-compass
+apt-get install -yq ruby ruby-compass
 
 # Install Node.js
-apt-get install -q -y nodejs
+apt-get install -yq nodejs
 
 # Install less compiler
-apt-get node-less yui-compressor
+apt-get install -yq node-less yui-compressor
 
 # Install composer
 php -r "readfile('https://getcomposer.org/installer');" | php
