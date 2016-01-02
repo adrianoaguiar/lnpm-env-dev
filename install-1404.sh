@@ -39,6 +39,9 @@ PERCONA_PW="root"
 echo "${DEBCONF_PREFIX}/root_password password $PERCONA_PW" | sudo debconf-set-selections
 echo "${DEBCONF_PREFIX}/root_password_again password $PERCONA_PW" | sudo debconf-set-selections
 
+locale-gen en_US.UTF-8
+dpkg-reconfigure locales 
+
 # Clean tmp dir
 if [ -d ${TMPDIR} ]; then
     rm -rf ${TMPDIR}
@@ -68,7 +71,7 @@ apt-get -y upgrade
 apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 
 # Install tools
-apt-get install -q -y unzip git-core
+apt-get install -q -y unzip git-core wget
 
 # Install nginx
 apt-get install -q -y nginx
@@ -108,7 +111,7 @@ apt-get install -q -y nodejs
 apt-get node-less yui-compressor
 
 # Install composer
-curl -s https://getcomposer.org/installer | php
+php -r "readfile('https://getcomposer.org/installer');" | php
 mv composer.phar /usr/local/bin/composer.phar
 ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
@@ -131,7 +134,7 @@ mv ./conf/php/php.ini               /etc/php5/fpm/php.ini
 mv ./conf/php/xhprof.ini            /etc/php5/mods-available/xhprof.ini
 
 ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/dev
-ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
+#ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
 
 unlink /etc/nginx/sites-enabled/default
 
@@ -151,31 +154,31 @@ rm /var/lib/mysql/ib_logfile1
 chown ${WWW_USER}:${WWW_GROUP} ${WWW_ROOT}
 chown ${WWW_USER}:${WWW_GROUP} -R /usr/share/php/xhprof_html
 
-cat <<EOF  > ${WWW_ROOT}/.xhprof-header.php
-<?php
+#cat <<EOF  > ${WWW_ROOT}/.xhprof-header.php
+#<?php
+#
+#if (extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
+#    require '/usr/share/php/xhprof_lib/utils/xhprof_lib.php';
+#    require '/usr/share/php/xhprof_lib/utils/xhprof_runs.php';
+#    xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
+#}
+#
+#EOF
 
-if (extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
-    require '/usr/share/php/xhprof_lib/utils/xhprof_lib.php';
-    require '/usr/share/php/xhprof_lib/utils/xhprof_runs.php';
-    xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
-}
-
-EOF
-
-cat <<EOF  > ${WWW_ROOT}/.xhprof-footer.php
-<?php
-if (isset(\$_GET['xhprof']) && extension_loaded('xhprof')) {
-    \$profiler_namespace = 'myapp';  // namespace for your application
-    \$xhprof_data = xhprof_disable();
-    \$xhprof_runs = new XHProfRuns_Default();
-    \$run_id = \$xhprof_runs->save_run(\$xhprof_data, \$profiler_namespace);
-
-    // url to the XHProf UI libraries (change the host name and path)
-    \$profiler_url = sprintf('/xhprof/index.php?run=%s&amp;source=%s', \$run_id, \$profiler_namespace);
-    echo '<a href="'. \$profiler_url .'" target="_blank">Profiler output</a>';
-}
-
-EOF
+#cat <<EOF  > ${WWW_ROOT}/.xhprof-footer.php
+#<?php
+#if (isset(\$_GET['xhprof']) && extension_loaded('xhprof')) {
+#    \$profiler_namespace = 'myapp';  // namespace for your application
+#    \$xhprof_data = xhprof_disable();
+#    \$xhprof_runs = new XHProfRuns_Default();
+#    \$run_id = \$xhprof_runs->save_run(\$xhprof_data, \$profiler_namespace);
+#
+#    // url to the XHProf UI libraries (change the host name and path)
+#    \$profiler_url = sprintf('/xhprof/index.php?run=%s&amp;source=%s', \$run_id, \$profiler_namespace);
+#    echo '<a href="'. \$profiler_url .'" target="_blank">Profiler output</a>';
+#}
+#
+#EOF
 
 # Restart service
 service nginx restart
