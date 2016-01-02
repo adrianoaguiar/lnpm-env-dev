@@ -181,9 +181,12 @@ chown ${WWW_USER}:${WWW_GROUP} -R /usr/share/php/xhprof_html
 #EOF
 
 # Restart service
+if [[ 0 -lt `ps aux | grep upstart | grep -v grep | wc -l` ]]
+then
 service nginx restart
 service php5-fpm restart
 service mysql restart
+fi
 
 # Cleanup
 rm -rf $TMPDIR
