@@ -71,7 +71,7 @@ apt-get -y upgrade
 apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 
 # Install tools
-apt-get install -yq unzip git-core wget
+apt-get install -yq unzip git-core wget htop mc mtr
 
 # Install nginx
 apt-get install -yq nginx
