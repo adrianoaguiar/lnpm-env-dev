@@ -101,8 +101,11 @@ php5enmod mcrypt
 apt-get autoremove -yq graphviz libpathplan4
 apt-get install -yq graphviz
 
-# Install Ruby + Ruby Compass + Sass
-apt-get install -yq ruby ruby-compass
+# Install Ruby
+apt-get install -yq ruby ruby-dev
+
+# Install Ruby Compass + Sass
+gem install compass
 
 # Install Node.js
 apt-get install -yq nodejs
